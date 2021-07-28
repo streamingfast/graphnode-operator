@@ -1,0 +1,19 @@
+domain: streamingfast.io
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: graphnode-operator
+repo: github.com/streamingfast/graphnode-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: streamingfast.io
+  group: graphnode
+  kind: TestRun
+  path: github.com/streamingfast/graphnode-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

@@ -1,0 +1,35 @@
+apiVersion: graphnode.streamingfast.io/v1alpha1
+kind: TestRun
+metadata:
+  name: testrun-sample
+spec:
+  git_branch: feature/mybranch
+  git_repo: https://github.com/streamingfast/graph-node.git
+  stop_block: 11022344
+  ipfs_addr: ipfs-v3:8080
+  ethereum_rpc_address: mainnet:https://some-provider/abcdef12345/
+  graphnode_docker_image: rust:1.52 
+  storage_class_name: ssd
+  service_account_name: svc-acct-with-access
+  tarballs_url: gs://example-bucket/tarballs
+  output_url: gs://example-bucket/testresults
+  postgres_tarballer_docker_image: dfuse/tarballer:0.0.7 # contains restorer.sh, gcloud and postgres
+  postgres_db_name: mainnet
+  postgres_user: graph
+  postgres_password: changeme # password set by the tarballer
+  output_dir_size: 1Gi
+  pgdata_storage: 10Gi
+  postgres_resources: 
+    limits:
+      cpu: "4"
+      memory: 8Gi
+    requests:
+      cpu: "2"
+      memory: 8Gi
+  graphnode_resources: 
+    limits:
+      cpu: "4"
+      memory: 6Gi
+    requests:
+      cpu: "2"
+      memory: 6Gi
