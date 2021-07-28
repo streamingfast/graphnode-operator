@@ -188,7 +188,8 @@ func jobDef(testRun *graphnodev1alpha1.TestRun) *batchv1.Job {
 								"git clone $GITREPO --branch $GITBRANCH --single-branch /data/graph-node && cd /data/graph-node;" +
 									"cargo build -p graph-node;" +
 									"echo Waiting for ${SIGNALING_FOLDER}/dbready...; while sleep 1; do test -e ${SIGNALING_FOLDER}/dbready && break; done;" +
-									"./target/debug/graph-node --ethereum-rpc=${ETHEREUM_RPC} --postgres-url=\"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}\" --ipfs=${IPFS_ADDR};" +
+									"(./target/debug/graph-node --ethereum-rpc=${ETHEREUM_RPC} --postgres-url=\"postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}\" --ipfs=${IPFS_ADDR} 2>&1 | tee /data/output/full.log)& " +
+									"while sleep 5; do grep -q 'stop block reached for subgraph' /data/output/full.log && pkill graph-node && break; done; " +
 									"OUTPUT_TAG=$(date +%s)-$(git rev-parse --short HEAD);" +
 									"echo \"cd /data/output && gsutil -m cp -r . ${OUTPUT_URL}/${OUTPUT_TAG}\" > /data/signal/complete.tmp && " + // the tarballer-postgresql will execute this command
 									"chmod +x /data/signal/complete.tmp && mv /data/signal/complete.tmp /data/signal/complete",
